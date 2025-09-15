@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="bg-white shadow-lg rounded-lg w-full max-w-md p-8">
+
+    <h2 class="text-2xl font-bold mb-6 text-center">Welcome</h2>
+
+    <!-- Tabs -->
+    <div class="flex justify-center mb-6">
+      <button id="loginTab" class="px-4 py-2 font-semibold border-b-2 border-yellow-500 text-yellow-500">Login</button>
+      <button id="signupTab" class="px-4 py-2 font-semibold text-gray-500">Sign Up</button>
+    </div>
+
+    <!-- Message -->
+    {% if message %}
+      <p class="text-red-500 mb-4 text-center">{{ message }}</p>
+    {% endif %}
+
+    <!-- Login Form -->
+    <div id="loginForm">
+      <form method="post" class="space-y-4">
+        {% csrf_token %}
+        {% for field in login_form %}
+          <div>
+            {{ field.label_tag }}<br>
+            {{ field }}
+            {% if field.errors %}
+              <p class="text-red-500 text-sm mt-1">{{ field.errors.0 }}</p>
+            {% endif %}
+          </div>
+        {% endfor %}
+        <button type="submit" name="login"
+          class="w-full bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded">Login</button>
+      </form>
+    </div>
+
+    <!-- Signup Form -->
+    <div id="signupForm" class="hidden">
+      <form method="post" class="space-y-4">
+        {% csrf_token %}
+        {% for field in signup_form %}
+          <div>
+            {{ field.label_tag }}<br>
+            {{ field }}
+            {% if field.errors %}
+              <p class="text-red-500 text-sm mt-1">{{ field.errors.0 }}</p>
+            {% endif %}
+          </div>
+        {% endfor %}
+        <button type="submit" name="signup"
+          class="w-full bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded">Sign Up</button>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const loginTab = document.getElementById('loginTab');
+  const signupTab = document.getElementById('signupTab');
+  const loginForm = document.getElementById('loginForm');
+  const signupForm = document.getElementById('signupForm');
+
+  loginTab.addEventListener('click', () => {
+    loginForm.classList.remove('hidden');
+    signupForm.classList.add('hidden');
+    loginTab.classList.add('text-yellow-500', 'border-b-2');
+    signupTab.classList.remove('text-yellow-500', 'border-b-2');
+    signupTab.classList.add('text-gray-500');
+  });
+
+  signupTab.addEventListener('click', () => {
+    signupForm.classList.remove('hidden');
+    loginForm.classList.add('hidden');
+    signupTab.classList.add('text-yellow-500', 'border-b-2');
+    loginTab.classList.remove('text-yellow-500', 'border-b-2');
+    loginTab.classList.add('text-gray-500');
+  });
+</script>
+{% endblock %}
+<input type="text" name="username" placeholder="Username"
+       style="width:100%; padding:12px; border:2px solid #1e90ff; border-radius:8px; background-color:#f0f8ff; color:#333;">
+<input type="password" name="password" placeholder="Password"
+       style="width:100%; padding:12px; border:2px solid #1e90ff; border-radius:8px; background-color:#f0f8ff; color:#333;">

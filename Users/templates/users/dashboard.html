@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="min-h-screen flex flex-col items-center justify-center">
+    <h2 class="text-2xl font-bold mb-4">Welcome, {{ request.user.username }}!</h2>
+    <p class="mb-6">This is your dashboard.</p>
+    <a href="{% url 'users:logout' %}" class="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded">Logout</a>
+</div>
+{% endblock %}
