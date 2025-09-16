@@ -1,0 +1,8 @@
+<h2>Upload Photos to test</h2>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Upload</button>
+</form>
+
+<a href="{% url 'albums:album_detail' album.id %}">Back to Album</a>

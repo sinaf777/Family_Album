@@ -1,0 +1,7 @@
+<h2>Create Album</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Save</button>
+</form>
+<a href="{% url 'albums:album_list' %}">Back to Album List</a>

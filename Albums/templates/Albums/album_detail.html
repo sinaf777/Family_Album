@@ -1,0 +1,19 @@
+<h2>{{ album.title }}</h2>
+<p>{{ album.description }}</p>
+<p>Created at: {{ album.created_at }}</p>
+
+<a href="{% url 'albums:photo_upload' album.id %}">Upload Photos</a>
+
+<h3>Photos</h3>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, 200px); gap: 15px;">
+    {% for photo in album.photos.all%}
+        <div>
+            <img src="{{ photo.image.url }}" width="200" height="200" style="object-fit: cover;">
+            <p>{{ photo.caption }}</p>
+        </div>
+    {% empty %}
+        <p>No photos in this album yet.</p>
+    {% endfor %}
+</div>
+
+<a href="{% url 'albums:album_list' %}">Back to Album List</a>

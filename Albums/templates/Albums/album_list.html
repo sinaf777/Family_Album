@@ -1,0 +1,14 @@
+<h2>My Albums</h2>
+<a href="{% url 'albums:album_create' %}">Create New Album</a>
+<ul>
+    {% for album in albums %}
+        <li>
+          <a href="{% url 'albums:album_detail' album.pk %}">{{ album.title }}</a><br>
+          <small>{{ album.description | default:"No description" }}</small><br>
+          <small>Created at: {{ album.created_at | date:"M d, Y H:i" }}</small>
+        </li>
+    {% empty %}
+        <li>No albums yet.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'users:dashboard' %}">Back to Dashboard</a>
