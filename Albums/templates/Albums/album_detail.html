@@ -1,14 +1,17 @@
 <h2>{{ album.title }}</h2>
 <p>{{ album.description }}</p>
-<p>Created at: {{ album.created_at }}</p>
+<p>Created at: {{ album.created_at|date:"M d, Y H:i" }}</p>
 
-<a href="{% url 'albums:photo_upload' album.id %}">Upload Photos</a>
+<a href="{% url 'albums:photo_upload' album.id %}" style="margin-bottom: 15px; display: inline-block;">➕ Upload Photos</a>
 
 <h3>Photos</h3>
 <div style="display: grid; grid-template-columns: repeat(auto-fill, 200px); gap: 15px;">
-    {% for photo in album.photos.all%}
+    {% for photo in album.photos.all %}
         <div>
-            <img src="{{ photo.image.url }}" width="200" height="200" style="object-fit: cover;">
+            <img src="{{ photo.image.url }}" 
+                 width="200" height="200" 
+                 style="object-fit: cover; cursor:pointer;" 
+                 onclick="openModal({{ forloop.counter0 }})">
             <p>{{ photo.caption }}</p>
         </div>
     {% empty %}
@@ -16,4 +19,43 @@
     {% endfor %}
 </div>
 
-<a href="{% url 'albums:album_list' %}">Back to Album List</a>
+<a href="{% url 'albums:album_list' %}" style="display: inline-block; margin-top: 20px;">⬅ Back to Album List</a>
+
+
+<!-- Fullscreen Modal -->
+<div id="photoModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); justify-content:center; align-items:center; z-index:1000;">
+    <span onclick="closeModal()" style="position:absolute; top:20px; right:30px; font-size:40px; color:white; cursor:pointer;">&times;</span>
+    
+    <img id="modalImage" src="" style="max-width:90%; max-height:90%; border-radius:8px;">
+    
+    <!-- Navigation buttons -->
+    <button id="prevBtn" onclick="changePhoto(-1)" style="position:absolute; top:50%; left:30px; font-size:40px; color:white; background:none; border:none; cursor:pointer;">&#10094;</button>
+    <button id="nextBtn" onclick="changePhoto(1)" style="position:absolute; top:50%; right:30px; font-size:40px; color:white; background:none; border:none; cursor:pointer;">&#10095;</button>
+</div>
+
+<script>
+  // Collect all photo URLs
+  const photos = [
+    {% for photo in album.photos.all %}
+      "{{ photo.image.url }}"{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ];
+  let currentIndex = 0;
+
+  function openModal(index) {
+    currentIndex = index;
+    document.getElementById('photoModal').style.display = 'flex';
+    document.getElementById('modalImage').src = photos[currentIndex];
+  }
+
+  function closeModal() {
+    document.getElementById('photoModal').style.display = 'none';
+  }
+
+  function changePhoto(direction) {
+    currentIndex += direction;
+    if (currentIndex < 0) currentIndex = photos.length - 1;
+    if (currentIndex >= photos.length) currentIndex = 0;
+    document.getElementById('modalImage').src = photos[currentIndex];
+  }
+</script>

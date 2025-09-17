@@ -11,6 +11,9 @@ class Album(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def cover_photo(self):
+        return self.photos.first()if self.photos.exists() else None
 
 class Photo(models.Model):
     album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='photos')

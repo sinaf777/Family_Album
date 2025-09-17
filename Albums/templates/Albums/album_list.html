@@ -1,14 +1,37 @@
 <h2>My Albums</h2>
-<a href="{% url 'albums:album_create' %}">Create New Album</a>
-<ul>
+<a href="{% url 'albums:album_create' %}" style="margin-bottom: 20px; display: inline-block;">➕ Create New Album</a>
+
+<ul style="display: grid; grid-template-columns: repeat(auto-fill, 220px); gap: 20px; list-style: none; padding: 0;">
     {% for album in albums %}
-        <li>
-          <a href="{% url 'albums:album_detail' album.pk %}">{{ album.title }}</a><br>
-          <small>{{ album.description | default:"No description" }}</small><br>
-          <small>Created at: {{ album.created_at | date:"M d, Y H:i" }}</small>
+        <li style="border: 1px solid #ddd; border-radius: 8px; overflow: hidden; background: #fafafa; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+            
+            <!-- Cover photo -->
+            <a href="{% url 'albums:album_detail' album.pk %}">
+                {% if album.cover_photo %}
+                    <img src="{{ album.cover_photo.image.url }}" 
+                         alt="Cover photo for {{ album.title }}" 
+                         style="width: 100%; height: 150px; object-fit: cover;">
+                {% else %}
+                    <div style="width:100%; height:150px; background:#eee; display:flex; align-items:center; justify-content:center; color:#999;">
+                        No Photo
+                    </div>
+                {% endif %}
+            </a>
+
+            <!-- Album Info -->
+            <div style="padding: 10px; text-align: center;">
+                <a href="{% url 'albums:album_detail' album.pk %}" style="font-weight: bold; font-size: 16px; color: #333; text-decoration: none;">
+                    {{ album.title }}
+                </a>
+                <p style="margin: 5px 0; font-size: 13px; color: #666;">
+                    {{ album.description|default:"No description" }}
+                </p>
+                <small style="color: #aaa;">📅 {{ album.created_at|date:"M d, Y H:i" }}</small>
+            </div>
         </li>
     {% empty %}
         <li>No albums yet.</li>
     {% endfor %}
 </ul>
-<a href="{% url 'users:dashboard' %}">Back to Dashboard</a>
+
+<a href="{% url 'users:dashboard' %}" style="display: inline-block; margin-top: 20px;">⬅ Back to Dashboard</a>
