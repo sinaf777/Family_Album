@@ -3,6 +3,7 @@
 Family_Album is a web application built with Django that allows users to create, manage, and share family photo albums. Users can register, upload photos, create albums, and explore albums shared by others.
 
 ---
+I NEED HELP IN FRONT-END
 
 ## Features
 
